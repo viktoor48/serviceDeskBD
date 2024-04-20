@@ -45,4 +45,19 @@ class RequestRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    /**
+     * @return Request[] Returns an array of Request objects with details
+     */
+    public function findAllWithDetails(): array
+    {
+        return $this->createQueryBuilder('r')
+        ->select('r', 't', 'tr', 'd', 'w')
+        ->leftJoin('r.teacher', 't')
+        ->leftJoin('r.typeRequest', 'tr')
+        ->leftJoin('r.device', 'd')
+        ->leftJoin('r.workers', 'w')
+        ->getQuery()
+        ->getResult();
+    }
 }
