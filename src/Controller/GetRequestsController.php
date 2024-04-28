@@ -73,7 +73,12 @@ class GetRequestsController extends AbstractController
         foreach ($request->getWorkers() as $worker) {
             $workers[] = [
                 'id' => $worker->getId(),
-                // добавьте другие поля, если необходимо
+                'login' => $worker->getLogin(),
+                'password' => $worker->getPassword(),
+                'post' => $worker->getPost(),
+                'name' => $worker->getName(),
+                'lastName' => $worker->getLastName(),
+                'patronymic' => $worker->getPatronymic(),
             ];
         }
         return $workers;
