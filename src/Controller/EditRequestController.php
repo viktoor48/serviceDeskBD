@@ -29,7 +29,10 @@ class EditRequestController extends AbstractController
         $requestData = json_decode($request->getContent(), true);
 
         // Обработка данных запроса
-        $requestEntity->setStatus($requestData['status'] ?? null);
+        $status = $requestData['status'] ?? null;
+        if ($status !== null) {
+            $requestEntity->setStatus($status);
+        }
         $requestEntity->setDecription($requestData['description'] ?? null);
         $requestEntity->setCabinet($requestData['cabinet'] ?? null); // Обновляем номер кабинета
         $requestEntity->setNumberBuilding($requestData['numberBuilding'] ?? null); // Обновляем номер корпуса
