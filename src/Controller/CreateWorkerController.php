@@ -25,6 +25,12 @@ class CreateWorkerController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
+        // Проверяем, существует ли работник с таким логином
+        $existingWorker = $this->entityManager->getRepository(Worker::class)->findOneBy(['login' => $data['login']]);
+        if ($existingWorker) {
+            return new JsonResponse(['error' => 'Worker with this login already exists'], Response::HTTP_CONFLICT);
+        }
+
         $worker = new Worker();
         $worker->setLogin($data['login'] ?? null);
         $worker->setPassword($data['password'] ?? null);

@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CreateTeacherController extends AbstractController
 {
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -24,6 +24,12 @@ class CreateTeacherController extends AbstractController
     {
         // Получаем данные из запроса
         $data = json_decode($request->getContent(), true);
+
+        // Проверяем, существует ли учитель с таким логином
+        $existingTeacher = $this->entityManager->getRepository(Teacher::class)->findOneBy(['login' => $data['login']]);
+        if ($existingTeacher) {
+            return new JsonResponse(['error' => 'Teacher with this login already exists'], Response::HTTP_CONFLICT);
+        }
 
         // Создаем нового преподавателя
         $teacher = new Teacher();

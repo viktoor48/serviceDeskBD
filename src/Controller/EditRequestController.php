@@ -66,6 +66,11 @@ class EditRequestController extends AbstractController
             }
         }
 
+        // **Установка текущей даты и времени для свойства timeStart по московскому времени**
+        $moscowTimeZone = new \DateTimeZone('Europe/Moscow'); // Создаем объект часового пояса для Москвы
+        $currentDateTime = new \DateTime('now', $moscowTimeZone); // Создаем объект DateTime с текущей датой и временем по московскому времени
+        $requestEntity->setTimeStart($currentDateTime->format('Y-m-d H:i:s')); // Применяем формат 'Y-m-d H:i:s'
+
         // Сохранение изменений
         $this->entityManager->flush();
 
